@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>建築物室內裝修工程管理乙級 - 學科模擬測驗</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="裝修乙級">
   <style>
     :root {
       --primary: #2b5876;
@@ -139,9 +144,10 @@
     </div>
 
     <p style="text-align: center; line-height: 1.8;">
-      <strong>考試規則：</strong><br>
-      • 隨機抽取 <strong>80 題</strong>（單選 60 題 + 複選 20 題）<br>
-      • 每題 1.25 分，總分 100 分，<strong>60 分及格</strong><br>
+      <strong>配分與考試規則：</strong><br>
+      • <strong>單選題 60 題</strong>（每題 1 分，共 60 分）<br>
+      • <strong>複選題 20 題</strong>（每題 2 分，共 40 分，全對才給分）<br>
+      • 總分 100 分，<strong>60 分及格</strong><br>
       • 測驗時間：<strong>100 分鐘</strong>
     </p>
     <button class="btn" id="start-btn" onclick="startQuiz()">開始測驗</button>
@@ -165,7 +171,6 @@
     <button class="btn" onclick="startQuiz()">再次測驗</button>
     <h2 style="margin-top: 30px;">詳細答題檢討</h2>
     <div id="review-container"></div>
-    <!-- 頁面底部新增再次測驗按鈕 -->
     <button class="btn" style="margin-top: 30px;" onclick="scrollToTopAndRestart()">再次測驗</button>
   </div>
 </div>
@@ -187,8 +192,8 @@
 
       document.getElementById('bank-info').innerHTML = `
         📚 <strong>目前匯入題庫總數：</strong> ${totalCount} 題 (純文字題)<br>
-        • <strong>單選題庫：</strong> ${singleCount} 題<br>
-        • <strong>複選題庫：</strong> ${multiCount} 題
+        • <strong>單選題庫：</strong> ${singleCount} 題 (測驗抽 60 題，每題 1 分)<br>
+        • <strong>複選題庫：</strong> ${multiCount} 題 (測驗抽 20 題，每題 2 分)
       `;
     } catch (error) {
       document.getElementById('bank-info').innerHTML = `
@@ -243,7 +248,7 @@
       card.className = 'card';
       
       const isMulti = q.type === 'multiple';
-      const badgeText = isMulti ? '複選題' : '單選題';
+      const badgeText = isMulti ? '複選題 (2分)' : '單選題 (1分)';
       const badgeClass = isMulti ? 'badge-multi' : 'badge-single';
       const inputType = isMulti ? 'checkbox' : 'radio';
 
@@ -308,12 +313,14 @@
 
       const isCorrect = JSON.stringify(userAnswers) === JSON.stringify(correctAnswers);
 
-      if (isCorrect) score += 1.25;
+      // 計分機制：單選 1 分，複選 2 分
+      const weight = q.type === 'multiple' ? 2 : 1;
+      if (isCorrect) score += weight;
 
       const reviewCard = document.createElement('div');
       reviewCard.className = `card review-card ${isCorrect ? 'correct' : 'wrong'}`;
       
-      const badgeText = q.type === 'multiple' ? '複選題' : '單選題';
+      const badgeText = q.type === 'multiple' ? '複選題 (2分)' : '單選題 (1分)';
       const badgeClass = q.type === 'multiple' ? 'badge-multi' : 'badge-single';
 
       let optionsReviewHTML = '';
@@ -340,7 +347,7 @@
         </div>
         <div style="margin-bottom: 10px;">${optionsReviewHTML}</div>
         <div class="ans-info ${isCorrect ? 'correct-bg' : 'wrong-bg'}">
-          <strong>結果：</strong>${isCorrect ? '✅ 回答正確' : '❌ 回答錯誤'}<br>
+          <strong>結果：</strong>${isCorrect ? `✅ 回答正確 (+${weight}分)` : '❌ 回答錯誤 (+0分)'}<br>
           <strong>你的答案：</strong>${userAnswers.length > 0 ? userAnswers.join(', ') : '未作答'}<br>
           <strong>正確答案：</strong>${correctAnswers.join(', ')}
         </div>
@@ -354,7 +361,7 @@
     resultHeader.className = `result-header ${isPass ? 'pass' : 'fail'}`;
     resultHeader.innerHTML = `
       <h2>${isPass ? '🎉 恭喜及格！' : '❌ 未及格，請繼續努力！'}</h2>
-      <p style="font-size: 24px; font-weight: bold;">本次得分：${score.toFixed(1)} 分 / 100 分</p>
+      <p style="font-size: 24px; font-weight: bold;">本次得分：${score} 分 / 100 分</p>
     `;
 
     document.getElementById('quiz-screen').style.display = 'none';
