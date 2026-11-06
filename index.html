@@ -76,9 +76,6 @@
       font-weight: bold;
       color: var(--primary);
       margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
     }
     .info-item {
       color: #4a5568;
@@ -136,14 +133,12 @@
       border-left: 5px solid #2a5298; 
     }
     
-    /* 重置按鈕改為黑灰色系 */
     .btn-dark-gray-card {
       background: #e9ecef;
       color: #343a40;
       border-left: 5px solid #495057;
     }
 
-    /* 括號與數字橘色縮小樣式 */
     .orange-num {
       color: #d97706;
       font-size: 13px;
@@ -151,24 +146,25 @@
       margin-left: 4px;
     }
     
+    /* 懸浮按鈕變更至右下角 */
     .floating-back-btn {
       position: fixed;
-      top: 15px;
-      right: 15px;
+      bottom: 25px;
+      right: 20px;
       z-index: 999;
       background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(4px);
       border: 1.5px solid var(--primary-light);
       color: var(--primary);
-      padding: 8px 15px;
+      padding: 10px 18px;
       border-radius: 30px;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 700;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.18);
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
       transition: all 0.2s;
     }
     .floating-back-btn:active { transform: scale(0.95); }
@@ -195,22 +191,26 @@
       line-height: 1.6;
       flex-grow: 1;
     }
+
+    /* 註記按鈕樣式 (未註記 vs 已註記黃色底色) */
     .star-btn {
       background: #fff;
-      border: 1px solid #00838f;
-      color: #00838f;
-      padding: 5px 10px;
+      border: 1.5px solid #d97706;
+      color: #d97706;
+      padding: 6px 12px;
       border-radius: 8px;
-      font-size: 12px;
+      font-size: 13px;
       cursor: pointer;
       font-weight: 700;
       flex-shrink: 0;
-      transition: all 0.1s;
+      transition: all 0.15s ease;
     }
     .star-btn.starred {
-      background: #00838f;
-      color: #fff;
+      background: #fbbf24;
+      border-color: #d97706;
+      color: #451a03;
     }
+
     .badge {
       display: inline-block;
       padding: 3px 8px;
@@ -416,7 +416,7 @@
       const playedCount = getPlayedQuestions().length;
 
       document.getElementById('bank-info').innerHTML = `
-        <div class="info-title">📚 目前匯入題庫總數：${totalCount} 題 (已覆蓋刷題 ${playedCount}/${totalCount} 題)</div>
+        <div class="info-title">📚 目前匯入題庫總數：${totalCount} 題<br>(已覆蓋刷題 ${playedCount}/${totalCount} 題)</div>
         <div class="info-item">單選題庫：${singleCount} 題 (測驗抽 60 題，每題 1 分)</div>
         <div class="info-item">複選題庫：${multiCount} 題 (測驗抽 20 題，每題 2 分)</div>
         <div class="notice-tag">⚠ 說明：本測驗已自動剔除圖說判讀等圖形題目。</div>
@@ -483,11 +483,6 @@
     const selectedMultiples = pickUniqueQuestions(multiples, 20);
 
     currentQuiz = shuffle([...selectedSingles, ...selectedMultiples]);
-
-    let playedIds = getPlayedQuestions();
-    currentQuiz.forEach(q => playedIds.push(q.id));
-    savePlayedQuestions(playedIds);
-
     currentModeName = `標準模擬測驗 (共 ${currentQuiz.length} 題)`;
     launchQuiz(100 * 60);
   }
@@ -611,6 +606,13 @@
     const starredIds = getStarredQuestions();
     const reviewContainer = document.getElementById('review-container');
     reviewContainer.innerHTML = '';
+
+    // 正式提交試卷時才記錄刷題覆蓋率
+    if (currentModeName.includes('標準模擬測驗')) {
+      let playedIds = getPlayedQuestions();
+      currentQuiz.forEach(q => playedIds.push(q.id));
+      savePlayedQuestions(playedIds);
+    }
 
     currentQuiz.forEach((q, idx) => {
       const inputs = document.querySelectorAll(`input[name="q_${idx}"]:checked`);
