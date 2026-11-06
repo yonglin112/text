@@ -11,93 +11,160 @@
   <meta name="apple-mobile-web-app-title" content="裝修乙級">
   <style>
     :root {
-      --primary: #2b5876;
-      --secondary: #4e4376;
-      --success: #28a745;
-      --danger: #dc3545;
-      --warning: #ff9800;
-      --bg: #f4f7f6;
+      --primary: #1e3c72;
+      --primary-light: #2a5298;
+      --accent-blue: #00838f;
+      --bg: #f4f7fa;
+      --card-shadow: 0 6px 18px rgba(30,60,114,0.06);
+      --btn-shadow: 0 4px 10px rgba(0,0,0,0.04);
     }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       background-color: var(--bg);
       margin: 0;
-      padding: 15px;
-      color: #333;
+      padding: 0;
+      color: #2c3e50;
     }
     .container {
       max-width: 800px;
       margin: 0 auto;
       background: #fff;
-      padding: 25px 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      min-height: 100vh;
       box-sizing: border-box;
       position: relative;
+      box-shadow: 0 0 30px rgba(0,0,0,0.06);
     }
-    h1 {
+    
+    .brand-header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      padding: 32px 20px;
       text-align: center;
-      color: var(--primary);
-      margin-top: 5px;
-      margin-bottom: 20px;
-      font-size: 22px;
+      color: #fff;
+      border-bottom-left-radius: 16px;
+      border-bottom-right-radius: 16px;
+      box-shadow: 0 4px 15px rgba(30,60,114,0.15);
     }
-    .bank-info-box {
-      background: #f8fafc;
-      border-left: 4px solid var(--primary);
-      padding: 15px;
-      border-radius: 6px;
-      margin-bottom: 20px;
+    .brand-header h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    .brand-header .sub-title {
+      margin: 6px 0 0 0;
       font-size: 14px;
-      line-height: 1.6;
+      color: #d4e3fc;
+      font-weight: 500;
+    }
+
+    .content {
+      padding: 20px;
+    }
+
+    .bank-info-box {
+      background: #eef2f7;
+      border-left: 5px solid var(--primary-light);
+      padding: 16px 18px;
+      border-radius: 8px;
+      margin-bottom: 25px;
+      font-size: 14px;
+      line-height: 1.7;
+      box-shadow: var(--card-shadow);
+    }
+    .info-title {
+      font-weight: bold;
+      color: var(--primary);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .info-item {
+      color: #4a5568;
+      margin-left: 20px;
+      position: relative;
+    }
+    .info-item::before {
+      content: "•";
+      position: absolute;
+      left: -12px;
+      color: var(--primary-light);
     }
     .notice-tag {
-      color: #d9534f;
+      color: #c0392b;
       font-weight: bold;
-      margin-top: 6px;
-      display: block;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
+    
     .menu-group {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      margin: 20px 0;
+      gap: 14px;
+      margin: 25px 0;
     }
     .main-btn {
       width: 100%;
-      padding: 14px 16px;
-      font-size: 15px;
-      font-weight: 600;
-      border-radius: 8px;
-      border: 1px solid rgba(0,0,0,0.08);
+      padding: 16px 20px;
+      font-size: 16px;
+      font-weight: 700;
+      border-radius: 12px;
+      border: 1px solid rgba(0,0,0,0.05);
       cursor: pointer;
-      text-align: left;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
       box-sizing: border-box;
-      transition: background-color 0.2s, transform 0.1s;
+      box-shadow: var(--btn-shadow);
+      transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
-    .main-btn:active { transform: scale(0.99); }
-    
-    .btn-red { background-color: #fbe9e7; color: #c62828; border-color: #ffccbc; }
-    .btn-yellow { background-color: #fffde7; color: #f57f17; border-color: #fff9c4; }
-    .btn-orange { background-color: #fff3e0; color: #e65100; border-color: #ffe0b2; }
-    .btn-white { background-color: #f5f5f5; color: #555; border-color: #e0e0e0; }
+    .main-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+    }
+    .main-btn:active { 
+      transform: scale(0.985); 
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
 
+    .btn-blue-card { 
+      background: #eef2f7; 
+      color: #1e3c72; 
+      border-left: 5px solid #2a5298; 
+    }
+    
+    /* 重置按鈕改為黑灰色系 */
+    .btn-dark-gray-card {
+      background: #e9ecef;
+      color: #343a40;
+      border-left: 5px solid #495057;
+    }
+
+    /* 括號與數字橘色縮小樣式 */
+    .orange-num {
+      color: #d97706;
+      font-size: 13px;
+      font-weight: 600;
+      margin-left: 4px;
+    }
+    
     .floating-back-btn {
       position: fixed;
       top: 15px;
       right: 15px;
       z-index: 999;
-      background: #ffffff;
-      border: 1.5px solid var(--primary);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(4px);
+      border: 1.5px solid var(--primary-light);
       color: var(--primary);
-      padding: 8px 14px;
-      border-radius: 20px;
+      padding: 8px 15px;
+      border-radius: 30px;
       font-size: 13px;
-      font-weight: bold;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.12);
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -107,11 +174,12 @@
     .floating-back-btn:active { transform: scale(0.95); }
 
     .card {
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      padding: 16px;
-      margin-bottom: 16px;
-      background: #fafafa;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 18px;
+      background: #ffffff;
+      box-shadow: var(--card-shadow);
       position: relative;
     }
     .card-header-bar {
@@ -119,95 +187,112 @@
       justify-content: space-between;
       align-items: flex-start;
       gap: 10px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
     .card-title {
       font-weight: bold;
       font-size: 15px;
-      line-height: 1.5;
+      line-height: 1.6;
       flex-grow: 1;
     }
     .star-btn {
       background: #fff;
-      border: 1px solid #ffb300;
-      color: #ff8f00;
-      padding: 4px 8px;
-      border-radius: 6px;
+      border: 1px solid #00838f;
+      color: #00838f;
+      padding: 5px 10px;
+      border-radius: 8px;
       font-size: 12px;
       cursor: pointer;
-      font-weight: 600;
+      font-weight: 700;
       flex-shrink: 0;
+      transition: all 0.1s;
     }
     .star-btn.starred {
-      background: #ffb300;
+      background: #00838f;
       color: #fff;
     }
     .badge {
       display: inline-block;
-      padding: 3px 7px;
+      padding: 3px 8px;
       font-size: 11px;
       border-radius: 4px;
       color: white;
       margin-right: 6px;
+      font-weight: bold;
     }
-    .badge-single { background-color: #007bff; }
-    .badge-multi { background-color: #6f42c1; }
+    .badge-single { background-color: #2a5298; }
+    .badge-multi { background-color: #00838f; }
     .options-group {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
     }
     .option-label {
       display: flex;
       align-items: center;
-      padding: 10px;
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 6px;
+      padding: 12px 14px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
       cursor: pointer;
       font-size: 14px;
+      transition: background-color 0.15s, border-color 0.15s;
     }
-    .option-label input { margin-right: 10px; flex-shrink: 0; }
+    .option-label:hover { background-color: #f1f5f9; }
+    .option-label input { margin-right: 12px; flex-shrink: 0; }
+    
     #timer-bar {
       position: sticky;
       top: 0;
-      background: #fff;
-      padding: 10px 0;
-      border-bottom: 2px solid #eee;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(4px);
+      padding: 12px 20px;
+      border-bottom: 2px solid #e2e8f0;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-weight: bold;
+      font-weight: 700;
       font-size: 14px;
       z-index: 100;
-      color: #555;
+      color: #475569;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
     }
     .result-header {
       text-align: center;
-      padding: 16px;
-      border-radius: 8px;
-      margin-bottom: 16px;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: var(--card-shadow);
     }
-    .pass { background-color: #d4edda; color: #155724; }
-    .fail { background-color: #f8d7da; color: #721c24; }
-    .review-card { border-left: 5px solid #ccc; }
-    .review-card.correct { border-left-color: var(--success); }
-    .review-card.wrong { border-left-color: var(--danger); }
+    .pass { background-color: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+    .fail { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+    .review-card { border-left: 6px solid #cbd5e1; }
+    .review-card.correct { border-left-color: #2a5298; }
+    .review-card.wrong { border-left-color: #e74c3c; }
     .ans-info {
-      margin-top: 10px;
-      padding: 10px;
-      border-radius: 4px;
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 6px;
       font-size: 13px;
     }
-    .ans-info.wrong-bg { background: #fff3f3; color: var(--danger); }
-    .ans-info.correct-bg { background: #f3fff3; color: var(--success); }
+    .ans-info.wrong-bg { background: #fef2f2; color: #991b1b; border: 1px solid #fee2e2; }
+    .ans-info.correct-bg { background: #f0f9ff; color: #0369a1; border: 1px solid #e0f2fe; }
     .stats-box {
-      background: #f8f9fa;
-      border: 1px solid #dee2e6;
-      border-radius: 8px;
-      padding: 12px 15px;
-      margin-bottom: 16px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 20px;
       font-size: 14px;
+      line-height: 1.6;
+    }
+    .footer-rules {
+      text-align: center;
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.6;
+      margin-top: 35px;
+      padding-bottom: 20px;
     }
   </style>
 </head>
@@ -218,54 +303,62 @@
 </button>
 
 <div class="container">
-  <h1>學科測試模擬考試</h1>
+  <header class="brand-header">
+    <h1>學科測試模擬考試</h1>
+    <div class="sub-title">建築物室內裝修工程管理乙級</div>
+  </header>
 
-  <div id="start-screen">
-    <div class="bank-info-box" id="bank-info">
-      載入題庫統計中...
+  <div class="content">
+    <div id="start-screen">
+      <div class="bank-info-box" id="bank-info">
+        載入題庫統計中...
+      </div>
+
+      <div class="menu-group">
+        <button class="main-btn btn-blue-card" onclick="startStandardQuiz()">
+          <span>開始標準模擬測驗</span>
+          <span class="orange-num">(80題)</span>
+        </button>
+
+        <button class="main-btn btn-blue-card" onclick="startStarredQuiz()">
+          <span>考題註記複習</span>
+          <span class="orange-num" id="starred-btn-text">(目前積累 0 題)</span>
+        </button>
+
+        <button class="main-btn btn-blue-card" onclick="startWrongQuiz()">
+          <span>錯題總複習</span>
+          <span class="orange-num" id="wrong-btn-text">(目前積累 0 題)</span>
+        </button>
+
+        <button class="main-btn btn-dark-gray-card" onclick="resetAllRecords()">
+          <span>重置刷題與錯題紀錄</span>
+        </button>
+      </div>
+
+      <p class="footer-rules">
+        標準測驗規則：單選 60 題 (每題1分)、複選 20 題 (每題2分)，滿分 100 分，60 分及格。
+      </p>
     </div>
 
-    <div class="menu-group">
-      <button class="main-btn btn-red" onclick="startStandardQuiz()">
-        <span>開始標準模擬測驗 (80題)</span>
-      </button>
-
-      <button class="main-btn btn-yellow" onclick="startStarredQuiz()">
-        <span id="starred-btn-text">🟡 考題註記複習 (目前積累 0 題)</span>
-      </button>
-
-      <button class="main-btn btn-orange" onclick="startWrongQuiz()">
-        <span id="wrong-btn-text">🟠 錯題總複習 (目前積累 0 題)</span>
-      </button>
-
-      <button class="main-btn btn-white" onclick="resetAllRecords()">
-        <span>⚪️ 重置刷題與錯題紀錄</span>
-      </button>
+    <div id="quiz-screen" style="display: none;">
+      <div id="timer-bar">
+        <span id="current-mode-title" style="color: var(--primary);">模擬測驗</span>
+        <span>⏱ 剩餘時間：<span id="time-display">100:00</span></span>
+      </div>
+      <form id="quiz-form" style="margin-top: 15px;">
+        <div id="questions-container"></div>
+        <button type="button" class="main-btn btn-blue-card" style="text-align: center; justify-content: center; font-size: 17px;" onclick="submitQuiz()">提交試卷</button>
+      </form>
     </div>
 
-    <p style="text-align: center; font-size: 12px; color: #777; line-height: 1.6;">
-      標準測驗規則：單選 60 題 (每題1分)、複選 20 題 (每題2分)，滿分 100 分，60 分及格。
-    </p>
-  </div>
-
-  <div id="quiz-screen" style="display: none;">
-    <div id="timer-bar">
-      <span id="current-mode-title" style="color: var(--primary);">模擬測驗</span>
-      <span>⏱ 剩餘時間：<span id="time-display">100:00</span></span>
+    <div id="result-screen" style="display: none;">
+      <div id="result-header" class="result-header"></div>
+      <div id="analysis-box" class="stats-box"></div>
+      <button class="main-btn btn-blue-card" style="text-align: center; justify-content: center; margin-bottom: 16px;" onclick="returnToHome()">返回主選單</button>
+      <h2 style="font-size: 18px; color: var(--primary);">詳細答題檢討</h2>
+      <div id="review-container"></div>
+      <button class="main-btn btn-blue-card" style="text-align: center; justify-content: center; margin-top: 16px;" onclick="returnToHome()">返回主選單</button>
     </div>
-    <form id="quiz-form" style="margin-top: 15px;">
-      <div id="questions-container"></div>
-      <button type="button" class="main-btn btn-red" style="text-align: center; justify-content: center; font-size: 17px;" onclick="submitQuiz()">提交試卷</button>
-    </form>
-  </div>
-
-  <div id="result-screen" style="display: none;">
-    <div id="result-header" class="result-header"></div>
-    <div id="analysis-box" class="stats-box"></div>
-    <button class="main-btn btn-red" style="text-align: center; justify-content: center; margin-bottom: 16px;" onclick="returnToHome()">返回主選單</button>
-    <h2 style="font-size: 18px;">詳細答題檢討</h2>
-    <div id="review-container"></div>
-    <button class="main-btn btn-red" style="text-align: center; justify-content: center; margin-top: 16px;" onclick="returnToHome()">返回主選單</button>
   </div>
 </div>
 
@@ -314,7 +407,6 @@
 
   async function loadQuestions() {
     try {
-      // 關鍵破除快取設計：在網址帶上 timestamp
       const response = await fetch('questions.json?v=' + Date.now());
       allQuestions = await response.json();
 
@@ -324,10 +416,10 @@
       const playedCount = getPlayedQuestions().length;
 
       document.getElementById('bank-info').innerHTML = `
-        📚 <strong>目前匯入題庫總數：</strong> ${totalCount} 題 (已覆蓋刷題 ${playedCount}/${totalCount} 題)<br>
-        • <strong>單選題庫：</strong> ${singleCount} 題 (測驗抽 60 題，每題 1 分)<br>
-        • <strong>複選題庫：</strong> ${multiCount} 題 (測驗抽 20 題，每題 2 分)<br>
-        <span class="notice-tag">⚠️ 說明：本測驗已自動剔除圖說判讀等圖形題目。</span>
+        <div class="info-title">📚 目前匯入題庫總數：${totalCount} 題 (已覆蓋刷題 ${playedCount}/${totalCount} 題)</div>
+        <div class="info-item">單選題庫：${singleCount} 題 (測驗抽 60 題，每題 1 分)</div>
+        <div class="info-item">複選題庫：${multiCount} 題 (測驗抽 20 題，每題 2 分)</div>
+        <div class="notice-tag">⚠ 說明：本測驗已自動剔除圖說判讀等圖形題目。</div>
       `;
       updateButtonsText();
     } catch (error) {
@@ -340,8 +432,8 @@
   function updateButtonsText() {
     const wrongIds = getWrongQuestions();
     const starredIds = getStarredQuestions();
-    document.getElementById('wrong-btn-text').innerText = `🟠 錯題總複習 (目前積累 ${wrongIds.length} 題)`;
-    document.getElementById('starred-btn-text').innerText = `🟡 考題註記複習 (目前積累 ${starredIds.length} 題)`;
+    document.getElementById('wrong-btn-text').innerText = `(目前積累 ${wrongIds.length} 題)`;
+    document.getElementById('starred-btn-text').innerText = `(目前積累 ${starredIds.length} 題)`;
   }
 
   function shuffle(array) {
@@ -551,8 +643,8 @@
         const isTarget = correctAnswers.includes(optVal);
         
         let highlightStyle = '';
-        if (isTarget) highlightStyle = 'color: green; font-weight: bold;';
-        if (isUserSelected && !isTarget) highlightStyle = 'color: red; text-decoration: line-through;';
+        if (isTarget) highlightStyle = 'color: #0369a1; font-weight: bold;';
+        if (isUserSelected && !isTarget) highlightStyle = 'color: #991b1b; text-decoration: line-through;';
 
         optionsReviewHTML += `
           <div style="${highlightStyle}">
