@@ -191,14 +191,14 @@
       flex-grow: 1;
     }
 
-    /* 註記按鈕字體縮小 */
+    /* 黃色星號註記按鈕樣式 */
     .star-btn {
       background: #fff;
-      border: 1.2px solid #d97706;
+      border: 1.2px solid #fbbf24;
       color: #d97706;
-      padding: 4px 8px;
+      padding: 4px 9px;
       border-radius: 6px;
-      font-size: 11px;
+      font-size: 12px;
       cursor: pointer;
       font-weight: 600;
       flex-shrink: 0;
@@ -387,7 +387,7 @@
     if (starred.includes(qId)) {
       starred = starred.filter(id => id !== qId);
       btnElement.classList.remove('starred');
-      btnElement.innerText = '☆ 註記此題';
+      btnElement.innerText = '☆ 註記';
     } else {
       starred.push(qId);
       btnElement.classList.add('starred');
@@ -489,7 +489,7 @@
   function startStarredQuiz() {
     const starredIds = getStarredQuestions();
     if (starredIds.length === 0) {
-      alert("目前沒有註記的考題！可在測驗中點擊「☆ 註記此題」加入收藏。");
+      alert("目前沒有註記的考題！可在測驗中點擊「☆ 註記」加入收藏。");
       return;
     }
 
@@ -555,7 +555,7 @@
             ${idx + 1}. ${q.question}
           </div>
           <button type="button" class="star-btn ${isStarred ? 'starred' : ''}" onclick="toggleStar(${q.id}, this)">
-            ${isStarred ? '★ 已註記' : '☆ 註記此題'}
+            ${isStarred ? '★ 已註記' : '☆ 註記'}
           </button>
         </div>
         <div class="options-group">${optionsHTML}</div>
@@ -660,7 +660,7 @@
             ${idx + 1}. ${q.question}
           </div>
           <button type="button" class="star-btn ${isStarred ? 'starred' : ''}" onclick="toggleStar(${q.id}, this)">
-            ${isStarred ? '★ 已註記' : '☆ 註記此題'}
+            ${isStarred ? '★ 已註記' : '☆ 註記'}
           </button>
         </div>
         <div style="margin-bottom: 10px;">${optionsReviewHTML}</div>
@@ -687,7 +687,7 @@
     document.getElementById('analysis-box').innerHTML = `
       📊 <strong>本次答題弱點分析：</strong><br>
       • <strong>單選題正確率：</strong> ${singleTotal > 0 ? Math.round((singleCorrect/singleTotal)*100) : 0}% (${singleCorrect}/${singleTotal})<br>
-      • <strong>複選題正確率：</strong> ${multiTotal > 0 ? Math.round((multiCorrect/multiTotal)*100) : 0}% (${multiCorrect}/${multiTotal})<br>
+      • <strong>複選題正確率：</strong> ${multiTotal > 0 ? Math.round((multiCorrect/multiTotal)*100) : 0}% (${multiTotal}/${multiTotal})<br>
       💡 <em>系統已將答錯題目自動收錄至「錯題總複習」中。</em>
     `;
 
