@@ -15,6 +15,7 @@
       --secondary: #4e4376;
       --success: #28a745;
       --danger: #dc3545;
+      --warning: #ff9800;
       --bg: #f4f7f6;
     }
     body {
@@ -32,6 +33,7 @@
       border-radius: 12px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.08);
       box-sizing: border-box;
+      position: relative;
     }
     h1 {
       text-align: center;
@@ -79,51 +81,66 @@
     .main-btn:active { transform: scale(0.99); }
     
     .btn-red { background-color: #fbe9e7; color: #c62828; border-color: #ffccbc; }
+    .btn-yellow { background-color: #fffde7; color: #f57f17; border-color: #fff9c4; }
     .btn-orange { background-color: #fff3e0; color: #e65100; border-color: #ffe0b2; }
     .btn-white { background-color: #f5f5f5; color: #555; border-color: #e0e0e0; }
 
-    .quiz-header-bar {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid #eee;
-      margin-bottom: 12px;
-    }
-    .back-btn {
-      background: #eef2f5;
-      border: 1px solid #cfd8dc;
-      color: #37474f;
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 13px;
-      cursor: pointer;
-      font-weight: 600;
-      flex-shrink: 0;
-    }
-    .back-btn:hover { background: #eceff1; }
-    .quiz-title-tag {
-      font-size: 15px;
-      font-weight: bold;
+    .floating-back-btn {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      z-index: 999;
+      background: #ffffff;
+      border: 1.5px solid var(--primary);
       color: var(--primary);
-      text-align: right;
-      word-break: break-word;
-      flex-grow: 1;
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s;
     }
+    .floating-back-btn:active { transform: scale(0.95); }
+
     .card {
       border: 1px solid #e0e0e0;
       border-radius: 8px;
       padding: 16px;
       margin-bottom: 16px;
       background: #fafafa;
+      position: relative;
+    }
+    .card-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
     }
     .card-title {
       font-weight: bold;
       font-size: 15px;
-      margin-bottom: 10px;
       line-height: 1.5;
+      flex-grow: 1;
+    }
+    .star-btn {
+      background: #fff;
+      border: 1px solid #ffb300;
+      color: #ff8f00;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    .star-btn.starred {
+      background: #ffb300;
+      color: #fff;
     }
     .badge {
       display: inline-block;
@@ -158,7 +175,8 @@
       padding: 10px 0;
       border-bottom: 2px solid #eee;
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
+      align-items: center;
       font-weight: bold;
       font-size: 14px;
       z-index: 100;
@@ -195,29 +213,33 @@
 </head>
 <body>
 
+<button class="floating-back-btn" id="floating-home-btn" style="display: none;" onclick="confirmReturnHome()">
+  ‹ 返回主選單
+</button>
+
 <div class="container">
   <h1>學科測試模擬考試</h1>
 
-  <!-- 首頁主選單 -->
   <div id="start-screen">
     <div class="bank-info-box" id="bank-info">
       載入題庫統計中...
     </div>
 
     <div class="menu-group">
-      <!-- 開始標準模擬測驗 -->
       <button class="main-btn btn-red" onclick="startStandardQuiz()">
         <span>開始標準模擬測驗 (80題)</span>
       </button>
 
-      <!-- 錯題總複習 -->
-      <button class="main-btn btn-orange" onclick="startWrongQuiz()">
-        <span id="wrong-btn-text">錯題總複習 (目前積累 0 題)</span>
+      <button class="main-btn btn-yellow" onclick="startStarredQuiz()">
+        <span id="starred-btn-text">🟡 考題註記複習 (目前積累 0 題)</span>
       </button>
 
-      <!-- 重置紀錄 -->
+      <button class="main-btn btn-orange" onclick="startWrongQuiz()">
+        <span id="wrong-btn-text">🟠 錯題總複習 (目前積累 0 題)</span>
+      </button>
+
       <button class="main-btn btn-white" onclick="resetAllRecords()">
-        <span>重置刷題與錯題紀錄</span>
+        <span>⚪️ 重置刷題與錯題紀錄</span>
       </button>
     </div>
 
@@ -226,14 +248,10 @@
     </p>
   </div>
 
-  <!-- 測驗進行畫面 -->
   <div id="quiz-screen" style="display: none;">
-    <div class="quiz-header-bar">
-      <button class="back-btn" onclick="confirmReturnHome()">‹ 返回主選單</button>
-      <div class="quiz-title-tag" id="current-mode-title">模擬測驗</div>
-    </div>
     <div id="timer-bar">
-      ⏱ 剩餘時間：<span id="time-display">100:00</span>
+      <span id="current-mode-title" style="color: var(--primary);">模擬測驗</span>
+      <span>⏱ 剩餘時間：<span id="time-display">100:00</span></span>
     </div>
     <form id="quiz-form" style="margin-top: 15px;">
       <div id="questions-container"></div>
@@ -241,12 +259,7 @@
     </form>
   </div>
 
-  <!-- 結算與複習畫面 -->
   <div id="result-screen" style="display: none;">
-    <div class="quiz-header-bar">
-      <button class="back-btn" onclick="returnToHome()">‹ 返回主選單</button>
-      <div class="quiz-title-tag" id="result-mode-title">測驗結果檢討</div>
-    </div>
     <div id="result-header" class="result-header"></div>
     <div id="analysis-box" class="stats-box"></div>
     <button class="main-btn btn-red" style="text-align: center; justify-content: center; margin-bottom: 16px;" onclick="returnToHome()">返回主選單</button>
@@ -270,22 +283,53 @@
     localStorage.setItem('quiz_wrong_ids', JSON.stringify([...new Set(ids)]));
   }
 
+  function getStarredQuestions() {
+    return JSON.parse(localStorage.getItem('quiz_starred_ids') || '[]');
+  }
+  function saveStarredQuestions(ids) {
+    localStorage.setItem('quiz_starred_ids', JSON.stringify([...new Set(ids)]));
+  }
+
+  function toggleStar(qId, btnElement) {
+    let starred = getStarredQuestions();
+    if (starred.includes(qId)) {
+      starred = starred.filter(id => id !== qId);
+      btnElement.classList.remove('starred');
+      btnElement.innerText = '☆ 註記此題';
+    } else {
+      starred.push(qId);
+      btnElement.classList.add('starred');
+      btnElement.innerText = '★ 已註記';
+    }
+    saveStarredQuestions(starred);
+    updateButtonsText();
+  }
+
+  function getPlayedQuestions() {
+    return JSON.parse(localStorage.getItem('quiz_played_ids') || '[]');
+  }
+  function savePlayedQuestions(ids) {
+    localStorage.setItem('quiz_played_ids', JSON.stringify([...new Set(ids)]));
+  }
+
   async function loadQuestions() {
     try {
-      const response = await fetch('questions.json');
+      // 關鍵破除快取設計：在網址帶上 timestamp
+      const response = await fetch('questions.json?v=' + Date.now());
       allQuestions = await response.json();
 
       const singleCount = allQuestions.filter(q => q.type === 'single').length;
       const multiCount = allQuestions.filter(q => q.type === 'multiple').length;
       const totalCount = allQuestions.length;
+      const playedCount = getPlayedQuestions().length;
 
       document.getElementById('bank-info').innerHTML = `
-        📚 <strong>目前匯入題庫總數：</strong> ${totalCount} 題<br>
+        📚 <strong>目前匯入題庫總數：</strong> ${totalCount} 題 (已覆蓋刷題 ${playedCount}/${totalCount} 題)<br>
         • <strong>單選題庫：</strong> ${singleCount} 題 (測驗抽 60 題，每題 1 分)<br>
         • <strong>複選題庫：</strong> ${multiCount} 題 (測驗抽 20 題，每題 2 分)<br>
         <span class="notice-tag">⚠️ 說明：本測驗已自動剔除圖說判讀等圖形題目。</span>
       `;
-      updateWrongBtnText();
+      updateButtonsText();
     } catch (error) {
       document.getElementById('bank-info').innerHTML = `
         <span style="color:red;">❌ 無法載入題庫，請確認 questions.json 檔案是否存在！</span>
@@ -293,9 +337,11 @@
     }
   }
 
-  function updateWrongBtnText() {
+  function updateButtonsText() {
     const wrongIds = getWrongQuestions();
-    document.getElementById('wrong-btn-text').innerText = `錯題總複習 (目前積累 ${wrongIds.length} 題)`;
+    const starredIds = getStarredQuestions();
+    document.getElementById('wrong-btn-text').innerText = `🟠 錯題總複習 (目前積累 ${wrongIds.length} 題)`;
+    document.getElementById('starred-btn-text').innerText = `🟡 考題註記複習 (目前積累 ${starredIds.length} 題)`;
   }
 
   function shuffle(array) {
@@ -307,6 +353,31 @@
     return arr;
   }
 
+  function pickUniqueQuestions(pool, needCount) {
+    let playedIds = getPlayedQuestions();
+    let unplayed = pool.filter(q => !playedIds.includes(q.id));
+
+    if (unplayed.length < needCount) {
+      playedIds = [];
+      savePlayedQuestions([]);
+      unplayed = [...pool];
+    }
+
+    const shuffledPool = shuffle(unplayed);
+    const selected = [];
+    const selectedIds = new Set();
+
+    for (let q of shuffledPool) {
+      if (!selectedIds.has(q.id)) {
+        selected.push(q);
+        selectedIds.add(q.id);
+      }
+      if (selected.length === needCount) break;
+    }
+
+    return selected;
+  }
+
   function startStandardQuiz() {
     const singles = allQuestions.filter(q => q.type === 'single');
     const multiples = allQuestions.filter(q => q.type === 'multiple');
@@ -316,12 +387,29 @@
       return;
     }
 
-    const selectedSingles = shuffle(singles).slice(0, 60);
-    const selectedMultiples = shuffle(multiples).slice(0, 20);
+    const selectedSingles = pickUniqueQuestions(singles, 60);
+    const selectedMultiples = pickUniqueQuestions(multiples, 20);
+
     currentQuiz = shuffle([...selectedSingles, ...selectedMultiples]);
+
+    let playedIds = getPlayedQuestions();
+    currentQuiz.forEach(q => playedIds.push(q.id));
+    savePlayedQuestions(playedIds);
 
     currentModeName = `標準模擬測驗 (共 ${currentQuiz.length} 題)`;
     launchQuiz(100 * 60);
+  }
+
+  function startStarredQuiz() {
+    const starredIds = getStarredQuestions();
+    if (starredIds.length === 0) {
+      alert("目前沒有註記的考題！可在測驗中點擊「☆ 註記此題」加入收藏。");
+      return;
+    }
+
+    currentQuiz = shuffle(allQuestions.filter(q => starredIds.includes(q.id)));
+    currentModeName = `考題註記複習 (共 ${currentQuiz.length} 題)`;
+    launchQuiz(60 * 60);
   }
 
   function startWrongQuiz() {
@@ -331,7 +419,7 @@
       return;
     }
 
-    currentQuiz = allQuestions.filter(q => wrongIds.includes(q.id));
+    currentQuiz = shuffle(allQuestions.filter(q => wrongIds.includes(q.id)));
     currentModeName = `錯題總複習 (共 ${currentQuiz.length} 題)`;
     launchQuiz(60 * 60);
   }
@@ -341,6 +429,7 @@
     document.getElementById('start-screen').style.display = 'none';
     document.getElementById('result-screen').style.display = 'none';
     document.getElementById('quiz-screen').style.display = 'block';
+    document.getElementById('floating-home-btn').style.display = 'flex';
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
     renderQuestions();
@@ -350,6 +439,7 @@
   function renderQuestions() {
     const container = document.getElementById('questions-container');
     container.innerHTML = '';
+    const starredIds = getStarredQuestions();
 
     currentQuiz.forEach((q, idx) => {
       const card = document.createElement('div');
@@ -359,6 +449,7 @@
       const badgeText = isMulti ? '複選題 (2分)' : '單選題 (1分)';
       const badgeClass = isMulti ? 'badge-multi' : 'badge-single';
       const inputType = isMulti ? 'checkbox' : 'radio';
+      const isStarred = starredIds.includes(q.id);
 
       let optionsHTML = '';
       q.options.forEach((opt, optIdx) => {
@@ -372,9 +463,14 @@
       });
 
       card.innerHTML = `
-        <div class="card-title">
-          <span class="badge ${badgeClass}">${badgeText}</span>
-          ${idx + 1}. ${q.question}
+        <div class="card-header-bar">
+          <div class="card-title">
+            <span class="badge ${badgeClass}">${badgeText}</span>
+            ${idx + 1}. ${q.question}
+          </div>
+          <button type="button" class="star-btn ${isStarred ? 'starred' : ''}" onclick="toggleStar(${q.id}, this)">
+            ${isStarred ? '★ 已註記' : '☆ 註記此題'}
+          </button>
         </div>
         <div class="options-group">${optionsHTML}</div>
       `;
@@ -420,6 +516,7 @@
     let multiCorrect = 0, multiTotal = 0;
 
     let wrongIds = getWrongQuestions();
+    const starredIds = getStarredQuestions();
     const reviewContainer = document.getElementById('review-container');
     reviewContainer.innerHTML = '';
 
@@ -445,6 +542,7 @@
       reviewCard.className = `card review-card ${isCorrect ? 'correct' : 'wrong'}`;
       const badgeText = q.type === 'multiple' ? '複選題 (2分)' : '單選題 (1分)';
       const badgeClass = q.type === 'multiple' ? 'badge-multi' : 'badge-single';
+      const isStarred = starredIds.includes(q.id);
 
       let optionsReviewHTML = '';
       q.options.forEach((opt, optIdx) => {
@@ -464,9 +562,14 @@
       });
 
       reviewCard.innerHTML = `
-        <div class="card-title">
-          <span class="badge ${badgeClass}">${badgeText}</span>
-          ${idx + 1}. ${q.question}
+        <div class="card-header-bar">
+          <div class="card-title">
+            <span class="badge ${badgeClass}">${badgeText}</span>
+            ${idx + 1}. ${q.question}
+          </div>
+          <button type="button" class="star-btn ${isStarred ? 'starred' : ''}" onclick="toggleStar(${q.id}, this)">
+            ${isStarred ? '★ 已註記' : '☆ 註記此題'}
+          </button>
         </div>
         <div style="margin-bottom: 10px;">${optionsReviewHTML}</div>
         <div class="ans-info ${isCorrect ? 'correct-bg' : 'wrong-bg'}">
@@ -479,9 +582,8 @@
     });
 
     saveWrongQuestions(wrongIds);
-    updateWrongBtnText();
+    updateButtonsText();
 
-    document.getElementById('result-mode-title').innerText = currentModeName + ' - 檢討';
     const isPass = score >= 60;
     const resultHeader = document.getElementById('result-header');
     resultHeader.className = `result-header ${isPass ? 'pass' : 'fail'}`;
@@ -503,9 +605,11 @@
   }
 
   function resetAllRecords() {
-    if (confirm("確定要清空所有答題歷史與錯題紀錄嗎？此動作無法復原。")) {
+    if (confirm("確定要清空所有答題歷史、錯題與註記紀錄嗎？此動作無法復原。")) {
       localStorage.removeItem('quiz_wrong_ids');
-      updateWrongBtnText();
+      localStorage.removeItem('quiz_played_ids');
+      localStorage.removeItem('quiz_starred_ids');
+      loadQuestions();
       alert("紀錄已成功重置！");
     }
   }
@@ -513,7 +617,9 @@
   function returnToHome() {
     document.getElementById('quiz-screen').style.display = 'none';
     document.getElementById('result-screen').style.display = 'none';
+    document.getElementById('floating-home-btn').style.display = 'none';
     document.getElementById('start-screen').style.display = 'block';
+    loadQuestions();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
