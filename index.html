@@ -78,7 +78,6 @@
     }
     .main-btn:active { transform: scale(0.99); }
     
-    /* 頁面風格調和之配色 */
     .btn-red { background-color: #fbe9e7; color: #c62828; border-color: #ffccbc; }
     .btn-blue { background-color: #e3f2fd; color: #1565c0; border-color: #bbdefb; }
     .btn-orange { background-color: #fff3e0; color: #e65100; border-color: #ffe0b2; }
@@ -108,7 +107,6 @@
       border: 1px solid #e2e8f0;
     }
 
-    /* 手機介面優化之導覽列 */
     .quiz-header-bar {
       display: flex;
       flex-wrap: wrap;
@@ -232,12 +230,10 @@
     </div>
 
     <div class="menu-group">
-      <!-- 開始標準模擬測驗 -->
       <button class="main-btn btn-red" onclick="startStandardQuiz()">
         <span>開始標準模擬測驗 (80題)</span>
       </button>
 
-      <!-- 分科/工作項目單元練習 -->
       <button class="main-btn btn-blue" onclick="toggleSubMenu()">
         <span>分科/工作項目單元練習</span>
         <span id="sub-arrow">▼</span>
@@ -251,12 +247,10 @@
         <button class="btn-sub" onclick="startSubjectQuiz('90009')">［90009節能減碳共同科目］</button>
       </div>
 
-      <!-- 錯題總複習 -->
       <button class="main-btn btn-orange" onclick="startWrongQuiz()">
         <span id="wrong-btn-text">錯題總複習 (目前積累 0 題)</span>
       </button>
 
-      <!-- 重置紀錄 -->
       <button class="main-btn btn-white" onclick="resetAllRecords()">
         <span>重置刷題與錯題紀錄</span>
       </button>
@@ -360,7 +354,6 @@
     return arr;
   }
 
-  // 開始標準 80 題測驗
   function startStandardQuiz() {
     const singles = allQuestions.filter(q => q.type === 'single');
     const multiples = allQuestions.filter(q => q.type === 'multiple');
@@ -378,7 +371,7 @@
     launchQuiz(100 * 60);
   }
 
-  // 開始分科/單元練習 (每次不低於 80 題)
+  // 精準比對科目開頭標題前綴
   function startSubjectQuiz(code) {
     let filtered = [];
     const subjectNames = {
@@ -392,30 +385,24 @@
     const baseName = subjectNames[code] || '單元練習';
 
     if (code === '12600') {
+      // 不含 [90006], [90007], [90008], [90009] 的專業科目
       filtered = allQuestions.filter(q => 
-        !q.question.includes('90006') && !q.question.includes('9006') &&
-        !q.question.includes('90007') && !q.question.includes('9007') &&
-        !q.question.includes('90008') && !q.question.includes('9008') &&
-        !q.question.includes('90009') && !q.question.includes('9009') &&
-        !q.question.includes('職業安全衛生') &&
-        !q.question.includes('工作倫理') &&
-        !q.question.includes('環境保護') &&
-        !q.question.includes('節能減碳')
+        !q.question.includes('[90006]') && 
+        !q.question.includes('[90007]') && 
+        !q.question.includes('[90008]') && 
+        !q.question.includes('[90009]')
       );
     } else {
-      filtered = allQuestions.filter(q => 
-        q.question.includes(code) || 
-        q.question.includes(code.slice(1)) ||
-        q.question.includes(baseName.slice(6))
-      );
+      // 精準抓取開頭標註該 5 碼科目的題目
+      filtered = allQuestions.filter(q => q.question.includes(`[${code}]`) || q.question.includes(code));
     }
 
     if (filtered.length === 0) {
-      alert("該科目目前無相關題目！");
+      alert(`未找到 ${baseName} 的相關題目，請確認題庫是否以標籤註記。`);
       return;
     }
 
-    // 單元練習抽考 80 題（若題庫少於 80 題則全抽）
+    // 預設抽考 80 題（若不足 80 題則全抽）
     const targetCount = Math.min(filtered.length, 80);
     currentQuiz = shuffle(filtered).slice(0, targetCount);
 
@@ -423,7 +410,6 @@
     launchQuiz(80 * 60);
   }
 
-  // 開始錯題總複習
   function startWrongQuiz() {
     const wrongIds = getWrongQuestions();
     if (wrongIds.length === 0) {
