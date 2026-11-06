@@ -79,33 +79,8 @@
     .main-btn:active { transform: scale(0.99); }
     
     .btn-red { background-color: #fbe9e7; color: #c62828; border-color: #ffccbc; }
-    .btn-blue { background-color: #e3f2fd; color: #1565c0; border-color: #bbdefb; }
     .btn-orange { background-color: #fff3e0; color: #e65100; border-color: #ffe0b2; }
     .btn-white { background-color: #f5f5f5; color: #555; border-color: #e0e0e0; }
-    
-    .btn-sub {
-      width: 100%;
-      padding: 12px 14px;
-      font-size: 14px;
-      font-weight: 500;
-      background: #ffffff;
-      color: #2c3e50;
-      border: 1px solid #dce4ec;
-      border-radius: 6px;
-      cursor: pointer;
-      text-align: left;
-      box-sizing: border-box;
-    }
-    .btn-sub:hover { background: #eef5fc; }
-    .sub-group {
-      display: none;
-      flex-direction: column;
-      gap: 8px;
-      background: #f8fafc;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid #e2e8f0;
-    }
 
     .quiz-header-bar {
       display: flex;
@@ -230,27 +205,17 @@
     </div>
 
     <div class="menu-group">
+      <!-- 開始標準模擬測驗 -->
       <button class="main-btn btn-red" onclick="startStandardQuiz()">
         <span>開始標準模擬測驗 (80題)</span>
       </button>
 
-      <button class="main-btn btn-blue" onclick="toggleSubMenu()">
-        <span>分科/工作項目單元練習</span>
-        <span id="sub-arrow">▼</span>
-      </button>
-
-      <div class="sub-group" id="sub-menu">
-        <button class="btn-sub" onclick="startSubjectQuiz('12600')">［12600建築物室內裝修工程管理］</button>
-        <button class="btn-sub" onclick="startSubjectQuiz('90006')">［90006職業安全衛生共同科目］</button>
-        <button class="btn-sub" onclick="startSubjectQuiz('90007')">［90007工作倫理與職業道德共同科目］</button>
-        <button class="btn-sub" onclick="startSubjectQuiz('90008')">［90008環境保護共同科目］</button>
-        <button class="btn-sub" onclick="startSubjectQuiz('90009')">［90009節能減碳共同科目］</button>
-      </div>
-
+      <!-- 錯題總複習 -->
       <button class="main-btn btn-orange" onclick="startWrongQuiz()">
         <span id="wrong-btn-text">錯題總複習 (目前積累 0 題)</span>
       </button>
 
+      <!-- 重置紀錄 -->
       <button class="main-btn btn-white" onclick="resetAllRecords()">
         <span>重置刷題與錯題紀錄</span>
       </button>
@@ -284,10 +249,10 @@
     </div>
     <div id="result-header" class="result-header"></div>
     <div id="analysis-box" class="stats-box"></div>
-    <button class="main-btn btn-blue" style="text-align: center; justify-content: center; margin-bottom: 16px;" onclick="returnToHome()">返回主選單</button>
+    <button class="main-btn btn-red" style="text-align: center; justify-content: center; margin-bottom: 16px;" onclick="returnToHome()">返回主選單</button>
     <h2 style="font-size: 18px;">詳細答題檢討</h2>
     <div id="review-container"></div>
-    <button class="main-btn btn-blue" style="text-align: center; justify-content: center; margin-top: 16px;" onclick="returnToHome()">返回主選單</button>
+    <button class="main-btn btn-red" style="text-align: center; justify-content: center; margin-top: 16px;" onclick="returnToHome()">返回主選單</button>
   </div>
 </div>
 
@@ -333,18 +298,6 @@
     document.getElementById('wrong-btn-text').innerText = `錯題總複習 (目前積累 ${wrongIds.length} 題)`;
   }
 
-  function toggleSubMenu() {
-    const sub = document.getElementById('sub-menu');
-    const arrow = document.getElementById('sub-arrow');
-    if (sub.style.display === 'flex') {
-      sub.style.display = 'none';
-      arrow.innerText = '▼';
-    } else {
-      sub.style.display = 'flex';
-      arrow.innerText = '▲';
-    }
-  }
-
   function shuffle(array) {
     let arr = [...array];
     for (let i = arr.length - 1; i > 0; i--) {
@@ -369,45 +322,6 @@
 
     currentModeName = `標準模擬測驗 (共 ${currentQuiz.length} 題)`;
     launchQuiz(100 * 60);
-  }
-
-  // 精準比對科目開頭標題前綴
-  function startSubjectQuiz(code) {
-    let filtered = [];
-    const subjectNames = {
-      '12600': '12600 建築物室內裝修工程管理',
-      '90006': '90006 職業安全衛生',
-      '90007': '90007 工作倫理與職業道德',
-      '90008': '90008 環境保護',
-      '90009': '90009 節能減碳'
-    };
-
-    const baseName = subjectNames[code] || '單元練習';
-
-    if (code === '12600') {
-      // 不含 [90006], [90007], [90008], [90009] 的專業科目
-      filtered = allQuestions.filter(q => 
-        !q.question.includes('[90006]') && 
-        !q.question.includes('[90007]') && 
-        !q.question.includes('[90008]') && 
-        !q.question.includes('[90009]')
-      );
-    } else {
-      // 精準抓取開頭標註該 5 碼科目的題目
-      filtered = allQuestions.filter(q => q.question.includes(`[${code}]`) || q.question.includes(code));
-    }
-
-    if (filtered.length === 0) {
-      alert(`未找到 ${baseName} 的相關題目，請確認題庫是否以標籤註記。`);
-      return;
-    }
-
-    // 預設抽考 80 題（若不足 80 題則全抽）
-    const targetCount = Math.min(filtered.length, 80);
-    currentQuiz = shuffle(filtered).slice(0, targetCount);
-
-    currentModeName = `${baseName} (共 ${currentQuiz.length} 題)`;
-    launchQuiz(80 * 60);
   }
 
   function startWrongQuiz() {
