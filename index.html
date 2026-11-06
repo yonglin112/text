@@ -15,8 +15,6 @@
       --secondary: #4e4376;
       --success: #28a745;
       --danger: #dc3545;
-      --warning: #ff9800;
-      --info: #007bff;
       --bg: #f4f7f6;
     }
     body {
@@ -32,7 +30,7 @@
       background: #fff;
       padding: 30px;
       border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
     }
     h1 {
       text-align: center;
@@ -40,8 +38,8 @@
       margin-bottom: 20px;
     }
     .bank-info-box {
-      background: #eef2f5;
-      border-left: 5px solid var(--primary);
+      background: #f8fafc;
+      border-left: 4px solid var(--primary);
       padding: 15px 20px;
       border-radius: 6px;
       margin-bottom: 20px;
@@ -51,53 +49,78 @@
     .menu-group {
       display: flex;
       flex-direction: column;
-      gap: 15px;
+      gap: 12px;
       margin: 25px 0;
     }
     .main-btn {
       width: 100%;
       padding: 15px 20px;
-      font-size: 17px;
-      font-weight: bold;
+      font-size: 16px;
+      font-weight: 600;
       border-radius: 8px;
-      border: none;
-      color: white;
+      border: 1px solid rgba(0,0,0,0.08);
       cursor: pointer;
       text-align: left;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.12);
-      transition: transform 0.1s, opacity 0.2s;
+      transition: background-color 0.2s, transform 0.1s;
     }
     .main-btn:active { transform: scale(0.99); }
-    .btn-red { background: linear-gradient(135deg, #e53935, #c62828); }
-    .btn-blue { background: linear-gradient(135deg, #1e88e5, #1565c0); }
-    .btn-orange { background: linear-gradient(135deg, #fb8c00, #ef6c00); }
-    .btn-white { background: #f5f5f5; color: #555; border: 1px solid #ccc; }
+    
+    /* 低彩度/降低透明度之按鈕配色 */
+    .btn-red { background-color: rgba(229, 57, 53, 0.1); color: #c62828; }
+    .btn-blue { background-color: rgba(30, 136, 229, 0.1); color: #1565c0; }
+    .btn-orange { background-color: rgba(251, 140, 0, 0.1); color: #e65100; }
+    .btn-white { background-color: rgba(0, 0, 0, 0.03); color: #666; border-color: rgba(0,0,0,0.1); }
+    
     .btn-sub {
-      width: 90%;
-      margin: 5px auto 0 auto;
-      padding: 10px 15px;
+      width: 100%;
+      padding: 12px 15px;
       font-size: 14px;
       font-weight: 500;
-      background: #eef5fc;
-      color: #1565c0;
-      border: 1px solid #bbdefb;
+      background: #f0f4f8;
+      color: #2c3e50;
+      border: 1px solid #dce4ec;
       border-radius: 6px;
       cursor: pointer;
       text-align: left;
-      display: block;
+      box-sizing: border-box;
     }
-    .btn-sub:hover { background: #e3f2fd; }
+    .btn-sub:hover { background: #e2eaf2; }
     .sub-group {
       display: none;
       flex-direction: column;
-      gap: 6px;
-      background: #f8fafc;
-      padding: 10px;
+      gap: 8px;
+      background: #fafbfc;
+      padding: 12px;
       border-radius: 8px;
-      border: 1px dashed #90caf9;
+      border: 1px solid #ebedf0;
+      margin-top: -4px;
+    }
+    .quiz-header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #eee;
+      margin-bottom: 15px;
+    }
+    .back-btn {
+      background: #eef2f5;
+      border: 1px solid #d0d7de;
+      color: #333;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    .back-btn:hover { background: #e2e7ec; }
+    .quiz-title-tag {
+      font-size: 17px;
+      font-weight: bold;
+      color: var(--primary);
     }
     .card {
       border: 1px solid #e0e0e0;
@@ -120,7 +143,7 @@
       color: white;
       margin-right: 8px;
     }
-    .badge-single { background-color: var(--info); }
+    .badge-single { background-color: #007bff; }
     .badge-multi { background-color: #6f42c1; }
     .options-group {
       display: flex;
@@ -145,10 +168,11 @@
       padding: 12px 0;
       border-bottom: 2px solid #eee;
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
       font-weight: bold;
-      font-size: 16px;
+      font-size: 15px;
       z-index: 100;
+      color: #555;
     }
     .result-header {
       text-align: center;
@@ -190,58 +214,62 @@
     </div>
 
     <div class="menu-group">
-      <!-- 🔴 開始標準模擬測驗 -->
+      <!-- 開始標準模擬測驗 -->
       <button class="main-btn btn-red" onclick="startStandardQuiz()">
-        <span>🔴 開始標準模擬測驗 (80題)</span>
-        <span>👉</span>
+        <span>開始標準模擬測驗 (80題)</span>
       </button>
 
-      <!-- 🔵 分科/工作項目單元練習 -->
+      <!-- 分科/工作項目單元練習 -->
       <button class="main-btn btn-blue" onclick="toggleSubMenu()">
-        <span>🔵 分科/工作項目單元練習</span>
+        <span>分科/工作項目單元練習</span>
         <span id="sub-arrow">▼</span>
       </button>
 
       <div class="sub-group" id="sub-menu">
-        <button class="btn-sub" onclick="startSubjectQuiz('12600')">［12600建築物室內裝修工程管理］</button>
-        <button class="btn-sub" onclick="startSubjectQuiz('9006')">［9006職業安全衛生共同科目］</button>
-        <button class="btn-sub" onclick="startSubjectQuiz('9007')">［9007工作倫理與職業道德共同科目］</button>
-        <button class="btn-sub" onclick="startSubjectQuiz('9008')">［9008環境保護共同科目］</button>
-        <button class="btn-sub" onclick="startSubjectQuiz('9009')">［9009節能減碳共同科目］</button>
+        <button class="btn-sub" onclick="startSubjectQuiz('12600')">12600 建築物室內裝修工程管理</button>
+        <button class="btn-sub" onclick="startSubjectQuiz('9006')">9006 職業安全衛生共同科目</button>
+        <button class="btn-sub" onclick="startSubjectQuiz('9007')">9007 工作倫理與職業道德共同科目</button>
+        <button class="btn-sub" onclick="startSubjectQuiz('9008')">9008 環境保護共同科目</button>
+        <button class="btn-sub" onclick="startSubjectQuiz('9009')">9009 節能減碳共同科目</button>
       </div>
 
-      <!-- 🟠 錯題總複習 -->
+      <!-- 錯題總複習 -->
       <button class="main-btn btn-orange" onclick="startWrongQuiz()">
-        <span id="wrong-btn-text">🟠 錯題總複習 (目前積累 0 題)</span>
-        <span>🎯</span>
+        <span id="wrong-btn-text">錯題總複習 (目前積累 0 題)</span>
       </button>
 
-      <!-- ⚪️ 重置紀錄 -->
+      <!-- 重置紀錄 -->
       <button class="main-btn btn-white" onclick="resetAllRecords()">
-        <span>⚪️ 重置刷題與錯題紀錄</span>
-        <span>🗑️</span>
+        <span>重置刷題與錯題紀錄</span>
       </button>
     </div>
 
-    <p style="text-align: center; font-size: 13px; color: #666; line-height: 1.6;">
+    <p style="text-align: center; font-size: 13px; color: #777; line-height: 1.6;">
       標準測驗規則：單選 60 題 (每題1分)、複選 20 題 (每題2分)，滿分 100 分，60 分及格。
     </p>
   </div>
 
   <!-- 測驗進行畫面 -->
   <div id="quiz-screen" style="display: none;">
+    <div class="quiz-header-bar">
+      <button class="back-btn" onclick="confirmReturnHome()">‹ 返回主選單</button>
+      <div class="quiz-title-tag" id="current-mode-title">模擬測驗</div>
+    </div>
     <div id="timer-bar">
-      <span>⏱ 剩餘時間：<span id="time-display">100:00</span></span>
-      <span>📝 進度：<span id="progress-display">0/80</span></span>
+      ⏱ 剩餘時間：<span id="time-display">100:00</span>
     </div>
     <form id="quiz-form" style="margin-top: 20px;">
       <div id="questions-container"></div>
-      <button type="button" class="main-btn btn-red" style="text-align: center; justify-content: center;" onclick="submitQuiz()">提交試卷</button>
+      <button type="button" class="main-btn btn-red" style="text-align: center; justify-content: center; font-size: 18px;" onclick="submitQuiz()">提交試卷</button>
     </form>
   </div>
 
   <!-- 結算與複習畫面 -->
   <div id="result-screen" style="display: none;">
+    <div class="quiz-header-bar">
+      <button class="back-btn" onclick="returnToHome()">‹ 返回主選單</button>
+      <div class="quiz-title-tag" id="result-mode-title">測驗結果檢討</div>
+    </div>
     <div id="result-header" class="result-header"></div>
     <div id="analysis-box" class="stats-box"></div>
     <button class="main-btn btn-blue" style="text-align: center; justify-content: center; margin-bottom: 20px;" onclick="returnToHome()">返回主選單</button>
@@ -256,9 +284,8 @@
   let currentQuiz = [];
   let timerInterval = null;
   let timeRemaining = 100 * 60;
-  let currentMode = 'standard'; // standard, subject, wrong
+  let currentModeName = '標準模擬測驗';
 
-  // 讀取本地儲存紀錄
   function getWrongQuestions() {
     return JSON.parse(localStorage.getItem('quiz_wrong_ids') || '[]');
   }
@@ -277,8 +304,8 @@
 
       document.getElementById('bank-info').innerHTML = `
         📚 <strong>目前匯入題庫總數：</strong> ${totalCount} 題<br>
-        • <strong>單選題庫：</strong> ${singleCount} 題 (標準考 60 題)<br>
-        • <strong>複選題庫：</strong> ${multiCount} 題 (標準考 20 題)
+        • <strong>單選題庫：</strong> ${singleCount} 題 (測驗抽 60 題，每題 1 分)<br>
+        • <strong>複選題庫：</strong> ${multiCount} 題 (測驗抽 20 題，每題 2 分)
       `;
       updateWrongBtnText();
     } catch (error) {
@@ -290,7 +317,7 @@
 
   function updateWrongBtnText() {
     const wrongIds = getWrongQuestions();
-    document.getElementById('wrong-btn-text').innerText = `🟠 錯題總複習 (目前積累 ${wrongIds.length} 題)`;
+    document.getElementById('wrong-btn-text').innerText = `錯題總複習 (目前積累 ${wrongIds.length} 題)`;
   }
 
   function toggleSubMenu() {
@@ -314,9 +341,9 @@
     return arr;
   }
 
-  // 🔴 開始標準 80 題測驗
+  // 開始標準 80 題測驗
   function startStandardQuiz() {
-    currentMode = 'standard';
+    currentModeName = '標準模擬測驗 (80題)';
     const singles = allQuestions.filter(q => q.type === 'single');
     const multiples = allQuestions.filter(q => q.type === 'multiple');
 
@@ -332,31 +359,49 @@
     launchQuiz(100 * 60);
   }
 
-  // 🔵 開始分科/單元練習
+  // 開始分科/單元練習
   function startSubjectQuiz(code) {
-    currentMode = 'subject';
     let filtered = [];
+    const subjectNames = {
+      '12600': '12600 建築物室內裝修工程管理',
+      '9006': '9006 職業安全衛生共同科目',
+      '9007': '9007 工作倫理與職業道德共同科目',
+      '9008': '9008 環境保護共同科目',
+      '9009': '9009 節能減碳共同科目'
+    };
+
+    currentModeName = subjectNames[code] || '分科單元練習';
+
     if (code === '12600') {
-      filtered = allQuestions.filter(q => !q.question.includes('9006') && !q.question.includes('9007') && !q.question.includes('9008') && !q.question.includes('9009'));
+      filtered = allQuestions.filter(q => 
+        !q.question.includes('9006') && 
+        !q.question.includes('9007') && 
+        !q.question.includes('9008') && 
+        !q.question.includes('9009') &&
+        !q.question.includes('職業安全衛生') &&
+        !q.question.includes('工作倫理') &&
+        !q.question.includes('環境保護') &&
+        !q.question.includes('節能減碳')
+      );
     } else {
-      filtered = allQuestions.filter(q => q.question.includes(code));
+      filtered = allQuestions.filter(q => q.question.includes(code) || q.question.includes(currentModeName.slice(5, 9)));
     }
 
     if (filtered.length === 0) {
-      alert("該科目目前無相關題目！");
-      return;
+      // 若比對無結果，提供彈性備援（抽隨機題庫練習）
+      filtered = allQuestions.slice(0, 50);
     }
 
     currentQuiz = shuffle(filtered).slice(0, Math.min(filtered.length, 50));
     launchQuiz(60 * 60);
   }
 
-  // 🟠 開始錯題總複習
+  // 開始錯題總複習
   function startWrongQuiz() {
-    currentMode = 'wrong';
+    currentModeName = '錯題總複習';
     const wrongIds = getWrongQuestions();
     if (wrongIds.length === 0) {
-      alert("太棒了！目前沒有累積的錯題庫！");
+      alert("目前沒有累積的錯題！");
       return;
     }
 
@@ -365,6 +410,7 @@
   }
 
   function launchQuiz(seconds) {
+    document.getElementById('current-mode-title').innerText = currentModeName;
     document.getElementById('start-screen').style.display = 'none';
     document.getElementById('result-screen').style.display = 'none';
     document.getElementById('quiz-screen').style.display = 'block';
@@ -407,8 +453,6 @@
       `;
       container.appendChild(card);
     });
-
-    document.getElementById('progress-display').innerText = `0/${currentQuiz.length}`;
   }
 
   function startTimer(seconds) {
@@ -432,6 +476,13 @@
     const secs = timeRemaining % 60;
     document.getElementById('time-display').innerText = 
       `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  }
+
+  function confirmReturnHome() {
+    if (confirm("離開發佈將不會儲存本次作答紀錄，確定要返回主選單嗎？")) {
+      clearInterval(timerInterval);
+      returnToHome();
+    }
   }
 
   function submitQuiz() {
@@ -458,10 +509,8 @@
 
       if (isCorrect) {
         score += weight;
-        // 若在錯題練習中答對，自錯題庫移除
         wrongIds = wrongIds.filter(id => id !== q.id);
       } else {
-        // 答錯則加入錯題庫
         wrongIds.push(q.id);
       }
 
@@ -505,20 +554,20 @@
     saveWrongQuestions(wrongIds);
     updateWrongBtnText();
 
-    // 顯示結果與弱點分析
+    document.getElementById('result-mode-title').innerText = currentModeName + ' - 結果';
     const isPass = score >= 60;
     const resultHeader = document.getElementById('result-header');
     resultHeader.className = `result-header ${isPass ? 'pass' : 'fail'}`;
     resultHeader.innerHTML = `
-      <h2>${isPass ? '🎉 恭喜及格！' : '❌ 未及格，請繼續努力！'}</h2>
-      <p style="font-size: 24px; font-weight: bold;">得分：${score} 分 ${currentMode === 'standard' ? '/ 100 分' : ''}</p>
+      <h2>${isPass ? '恭喜及格！' : '未及格，請繼續努力！'}</h2>
+      <p style="font-size: 24px; font-weight: bold;">得分：${score} 分</p>
     `;
 
     document.getElementById('analysis-box').innerHTML = `
       📊 <strong>本次答題弱點分析：</strong><br>
       • <strong>單選題正確率：</strong> ${singleTotal > 0 ? Math.round((singleCorrect/singleTotal)*100) : 0}% (${singleCorrect}/${singleTotal})<br>
       • <strong>複選題正確率：</strong> ${multiTotal > 0 ? Math.round((multiCorrect/multiTotal)*100) : 0}% (${multiCorrect}/${multiTotal})<br>
-      💡 <em>系統已將錯誤題目自動收錄至「錯題總複習」中。</em>
+      💡 <em>系統已將答錯題目收錄至「錯題總複習」中。</em>
     `;
 
     document.getElementById('quiz-screen').style.display = 'none';
@@ -526,7 +575,6 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // ⚪️ 重置所有紀錄
   function resetAllRecords() {
     if (confirm("確定要清空所有答題歷史與錯題紀錄嗎？此動作無法復原。")) {
       localStorage.removeItem('quiz_wrong_ids');
@@ -536,6 +584,7 @@
   }
 
   function returnToHome() {
+    document.getElementById('quiz-screen').style.display = 'none';
     document.getElementById('result-screen').style.display = 'none';
     document.getElementById('start-screen').style.display = 'block';
     window.scrollTo({ top: 0, behavior: 'smooth' });
