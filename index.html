@@ -146,7 +146,6 @@
       margin-left: 4px;
     }
     
-    /* 懸浮按鈕變更至右下角 */
     .floating-back-btn {
       position: fixed;
       bottom: 25px;
@@ -192,16 +191,16 @@
       flex-grow: 1;
     }
 
-    /* 註記按鈕樣式 (未註記 vs 已註記黃色底色) */
+    /* 註記按鈕字體縮小 */
     .star-btn {
       background: #fff;
-      border: 1.5px solid #d97706;
+      border: 1.2px solid #d97706;
       color: #d97706;
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 13px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 11px;
       cursor: pointer;
-      font-weight: 700;
+      font-weight: 600;
       flex-shrink: 0;
       transition: all 0.15s ease;
     }
@@ -607,7 +606,6 @@
     const reviewContainer = document.getElementById('review-container');
     reviewContainer.innerHTML = '';
 
-    // 正式提交試卷時才記錄刷題覆蓋率
     if (currentModeName.includes('標準模擬測驗')) {
       let playedIds = getPlayedQuestions();
       currentQuiz.forEach(q => playedIds.push(q.id));
